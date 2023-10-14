@@ -1,0 +1,39 @@
+/*oculta el modal*/
+.hide-modal{
+    display: none !important;
+
+}
+/*Contenedor del modal opaca toda la pagina*/
+.modal-container{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+/*La cajita que contiene los formularios*/
+.modal-dialog{
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.2);
+}
+/*Etiqueta que permite modificar el comportamiento de los labels */
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+/*Permite tener mejor espacio entre lo que vaos a rellenar*/
+input{
+    margin-bottom: 10px;
+    padding: 5px;
+}
+/*Le coloco color a los textos*/
+span, label{
+    color: black;
+}
