@@ -21,7 +21,7 @@ export const getUserById = async(id) => {
     const data = await res.json()
     //Permite cambiar los valores de la data con ayuda del mapper
     const user = localhostUserToModel(data);
-    console.log({user});
+
     return user;
 
 }

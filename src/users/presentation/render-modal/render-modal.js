@@ -13,12 +13,15 @@ let loadedUser;
 export const showModal = async(id) => {
 
     modal?.classList.remove('hide-modal');
+    loadedUser = {};
     //Comprobacion de si existe o no el id, si no existe no hacemos nada
     if (!id) return;
     //De lo contario mandamos a llamar a nuestro await getUserById..
-    const user = await getUserById(id)
+    const user = await getUserById(id);
+    setFormValues(user);
 
-} 
+}
+
 export const hideModal = () => {
 
     modal?.classList.add('hide-modal');
@@ -26,13 +29,21 @@ export const hideModal = () => {
     form?.reset();
     
 }
+
 /**
  * 
  * @param {User} user 
  */
 const setFormValues = (user) => {
 
+    form.querySelector('[name="firstName"]').value = user.firstName;
+    form.querySelector('[name="lastName"]').value = user.lastName;
+    form.querySelector('[name="balance"]').value = user.balance;
+    form.querySelector('[name="isActive"]').check = user.isActive;
+
+    loadedUser = user;
 }
+
 
 /**
  * 
@@ -61,7 +72,7 @@ export const renderModal = (element, callback) => {
         evento.preventDefault();
         //capturamos la informacion del formulario
         const formData = new FormData(form);
-        const userLike = {};
+        const userLike = {...loadedUser};
         
         if(!formData.get('isActive')){
             formData.append('isActive', 'off')

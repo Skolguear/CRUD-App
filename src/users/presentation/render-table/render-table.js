@@ -1,4 +1,5 @@
-import usersStore from '../../store/users-store'
+import usersStore from '../../store/users-store';
+import {showModal} from '../render-modal/render-modal'
 import './render-table.css';
 
 
@@ -27,9 +28,19 @@ const createTable = () => {
     return table;
 }
 
-
+/**
+ * 
+ * @param {MauseEvent} event 
+ */
 const tableSelectListener = (event) => {
-    console.log(element.target);
+    //Esta forma podemos seleccionar mediante la clase sin marcar otras secciones
+    const element = event.target.closest('.select-user');
+    //si el elemento no existe, puede que sea por dar click en otra cosa que no es el que se necesita 
+    if(!element) return;
+    //pero si damos click correctamente en el que nos interesa
+    const id = element.getAttribute('data-id');
+    //llamamos al showModal y le pasamos el id
+    showModal(id)
 }
 
 /**
@@ -45,7 +56,7 @@ export const renderTable = (element) => {
         element.append(table);
 
         //TODO listeners a la table como escuchar eventos de click
-        table.addEventListener('click', event => tableSelectListener(event))
+        table.addEventListener('click', tableSelectListener)
     }
     let tableHTML;
 
