@@ -1,6 +1,7 @@
-import usersStore from '../../store/users-store';
-import {showModal} from '../render-modal/render-modal'
 import './render-table.css';
+import { deleteUserById } from '../../use-cases/delete-user-by-id';
+import {showModal} from '../render-modal/render-modal';
+import usersStore from '../../store/users-store';
 
 
 let table;
@@ -33,14 +34,34 @@ const createTable = () => {
  * @param {MauseEvent} event 
  */
 const tableSelectListener = (event) => {
-    //Esta forma podemos seleccionar mediante la clase sin marcar otras secciones
+    
     const element = event.target.closest('.select-user');
-    //si el elemento no existe, puede que sea por dar click en otra cosa que no es el que se necesita 
     if(!element) return;
-    //pero si damos click correctamente en el que nos interesa
+    
     const id = element.getAttribute('data-id');
-    //llamamos al showModal y le pasamos el id
     showModal(id)
+}
+
+/**
+ * 
+ * @param {MauseEvent} event 
+ */
+const tableDeleteListener = async(event) => {
+    
+    const element = event.target.closest('.delete-user');
+    if(!element) return;
+    const id = element.getAttribute('data-id');
+
+    try {
+        await deleteUserById(id);
+        await usersStore.reloadPage();
+        document.querySelector('#current-page').innerText = usersStore.getCurrentPage();
+        renderTable();
+    } catch (error) {
+        console.log(error);
+        alert('No se pudo eliminar')
+    }
+    
 }
 
 /**
