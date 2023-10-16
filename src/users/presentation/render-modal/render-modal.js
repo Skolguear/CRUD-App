@@ -1,7 +1,7 @@
-import modalHTML from './render-modal.html?raw';
 import './render-modal.css'
-import { User } from '../../models/user';
 import { getUserById } from '../../use-cases/get-user-by-id';
+import { User } from '../../models/user';
+import modalHTML from './render-modal.html?raw';
 
 let modal, form;
 let loadedUser;
@@ -39,7 +39,7 @@ const setFormValues = (user) => {
     form.querySelector('[name="firstName"]').value = user.firstName;
     form.querySelector('[name="lastName"]').value = user.lastName;
     form.querySelector('[name="balance"]').value = user.balance;
-    form.querySelector('[name="isActive"]').check = user.isActive;
+    form.querySelector('[name="isActive"]').checked = user.isActive;
 
     loadedUser = user;
 }
@@ -87,8 +87,7 @@ export const renderModal = (element, callback) => {
             }
             //comprobamos si el key es isActive
             if(key === 'isActive'){
-                /*tomamos su informacion y le preguntamos que si su valor es on, 
-                entonces es true y si no es on entonces es false*/
+                /*tomamos su informacion y le preguntamos que si su valor es on, entonces es true y si no es on entonces es false*/
                 userLike[key] = (value === 'on') ? true:false;
                 continue;
             }

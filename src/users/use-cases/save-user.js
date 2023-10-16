@@ -7,20 +7,25 @@ import {User} from '../models/user';
  * @param {Like<User>} userLike 
  */
 export const saveUser = async(userLike) => {
-    //Hacemos una instancia de la informacion que recibimos
+    
     const user = new User( userLike );
-    //Validacion para evitar enviar informacion vacia en el modal
-    if(!user.firstName ||  user.lastName )
+
+    if(!user.firstName ||  !user.lastName )
         throw 'First & Last name are required';
-    //conversion de la instancia que contiene el mapper como lo pide el backend
-    const userToSave = userModelToLocalhost(user)
-    //Valida si el id existe, entonces no se implementa nada
+    
+        
+    const userToSave = userModelToLocalhost(user);
+    let userUpdated;
+    
     if (user.id) {
-        throw 'No implementada la actualizacion'
-        return;
+        userUpdated = await updateUser(userToSave);
+        
+    } else {
+        userUpdated = await createUser(userToSave);
     }
-    const updateUser = await createUser(userToSave);
-    return updateUser;
+
+    return userModelToLocalhost( userUpdated );
+
 }
 //Crear nuevo usuario
 /**
@@ -45,4 +50,29 @@ const createUser = async( user ) => {
     const newUser = await res.json();
     console.log({newUser});
     return newUser;
+}
+//Actualizar informacion 
+/**
+ * @param {Like<User>} user
+ */
+const updateUser = async( user ) => {
+    
+    //par actualizar se añadio el user.id al url
+    const url = `${import.meta.env.VITE_BASE_URL}/users/${user.id}`;
+
+    //Respues es igual al await de fetch, le pasamos el url y pasamos la configuracion para postear
+    const res = await fetch(url,{
+        //metodo PATCH par actualizar
+        method: 'PATCH',
+        //Serializacion como formato string
+        body: JSON.stringify(user),
+        //header espera el contenido en formato json
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    //Se cambio los nombres para hacer referencia a actualizar usuario
+    const updateUser = await res.json();
+    console.log({updateUser});
+    return updateUser;
 }
