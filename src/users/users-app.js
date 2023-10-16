@@ -14,17 +14,18 @@ export const UsersApp = async( element ) => {
 
     element.innerHTML = 'Loading...';
     await usersStore.loadNexPage();
-    element.innerHTML = ' ';
-    //render de la tabla
-    renderTable(element);
-    //render de los botones y pagina
-    renderButtons(element);
-    //Render boton flotante
-    renderAddButton(element)
-    //Render del modal
-    renderModal(element, async(userLike) => {
-        const user = await saveUser(userLike);
-        usersStore.onUserChanged(user);
+    element.innerHTML = '';
+    
+    renderTable( element );
+    
+    renderButtons( element );
+    
+    renderAddButton( element )
+    
+    renderModal( element, async( userLike ) => {
+        const user = await saveUser( userLike );
+        console.log( user );
+        usersStore.onUserChanged( user );
         renderTable();
 
     } )
