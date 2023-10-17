@@ -34,10 +34,8 @@ export const saveUser = async( userLike ) => {
 const createUser = async( user ) => {
     
     
-    const url = `${import.meta.env.VITE_BASE_URL}/users`;
-
+    const url = `${ import.meta.env.VITE_BASE_URL }/users`;
     const res = await fetch(url,{
-        
         method: 'POST',
         body: JSON.stringify(user),
         headers: {
@@ -47,6 +45,7 @@ const createUser = async( user ) => {
 
     const newUser = await res.json();
     console.log({newUser});
+
     return newUser;
 }
 
@@ -56,18 +55,18 @@ const createUser = async( user ) => {
 const updateUser = async( user ) => {
     
     
-    const url = `${import.meta.env.VITE_BASE_URL}/users/${user.id}`;
-
-    const res = await fetch(url,{
-        
+    const url = `${ import.meta.env.VITE_BASE_URL }/users/${ user.id }`;
+    const res = await fetch(url, {
         method: 'PATCH',
         body: JSON.stringify(user),
         headers: {
             'Content-Type': 'application/json'
         }
-    })
+    });
     
     const updateUser = await res.json();
     console.log({updateUser});
+
     return updateUser;
+    
 }

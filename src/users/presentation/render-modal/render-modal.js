@@ -11,23 +11,17 @@ let loadedUser;
  * @param {String|Number} id 
  */
 export const showModal = async(id) => {
-
     modal?.classList.remove('hide-modal');
     loadedUser = {};
-    //Comprobacion de si existe o no el id, si no existe no hacemos nada
-    if (!id) return;
-    //De lo contario mandamos a llamar a nuestro await getUserById..
-    const user = await getUserById(id);
-    setFormValues(user);
-
+    
+    if ( !id ) return;
+    const user = await getUserById( id );
+    setFormValues( user );
 }
 
 export const hideModal = () => {
-
     modal?.classList.add('hide-modal');
-    // Reset del formulario 
     form?.reset();
-    
 }
 
 /**
@@ -35,12 +29,10 @@ export const hideModal = () => {
  * @param {User} user 
  */
 const setFormValues = (user) => {
-
     form.querySelector('[name="firstName"]').value = user.firstName;
     form.querySelector('[name="lastName"]').value = user.lastName;
     form.querySelector('[name="balance"]').value = user.balance;
     form.querySelector('[name="isActive"]').checked = user.isActive;
-
     loadedUser = user;
 }
 
@@ -51,15 +43,12 @@ const setFormValues = (user) => {
  * @param {(userLike)=> promise<void>} callback
  */
 export const renderModal = (element, callback) => {
-    //comprueda si existe.. 
-    if (modal) return;
-    //si no existe se contruye todo..
-    modal = document.createElement('div');
-    //le pasamos el html de nuestroa archivo
-    modal.innerHTML = modalHTML;
-    //creamos las clases
-    modal.className = 'modal-container hide-modal';
 
+    if (modal) return;
+    
+    modal = document.createElement('div');
+    modal.innerHTML = modalHTML;
+    modal.className = 'modal-container hide-modal';
     form = modal.querySelector('form');
 
     modal.addEventListener('click', (evento) => {
@@ -70,24 +59,21 @@ export const renderModal = (element, callback) => {
 
     form.addEventListener('submit', async(evento) => {
         evento.preventDefault();
-        //capturamos la informacion del formulario
-        const formData = new FormData(form);
-        const userLike = {...loadedUser};
+
+        const formData = new FormData( form );
+        const userLike = { ...loadedUser };
         
         if(!formData.get('isActive')){
             formData.append('isActive', 'off')
         }
-        //iteramos y baremos el formulario para obtener key y value
+
         for (const [key, value] of formData) {
-            //hacemos la comprobacion de balance
             if(key === 'balance') {
-                //Convertimos el valor de balance a numero
                 userLike[key] = +value;
                 continue;
             }
-            //comprobamos si el key es isActive
+
             if(key === 'isActive'){
-                /*tomamos su informacion y le preguntamos que si su valor es on, entonces es true y si no es on entonces es false*/
                 userLike[key] = (value === 'on') ? true:false;
                 continue;
             }
@@ -95,12 +81,12 @@ export const renderModal = (element, callback) => {
         }
 
         // console.log(userLike);
-        await callback(userLike)
+        await callback(userLike);
 
         hideModal();
 
-    })
+    });
 
-    element.append(modal)
+    element.append(modal);
 }
 

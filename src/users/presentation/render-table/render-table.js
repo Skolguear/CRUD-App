@@ -77,7 +77,8 @@ export const renderTable = (element) => {
         element.append(table);
 
         //TODO listeners a la table como escuchar eventos de click
-        table.addEventListener('click', tableSelectListener)
+        table.addEventListener('click', tableSelectListener);
+        table.addEventListener('click', tableDeleteListener);
     }
     let tableHTML;
 

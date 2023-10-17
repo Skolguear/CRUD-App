@@ -8,19 +8,18 @@ const state = {
 const loadNexPage = async() => {
     
     const users = await loadUsersByPage( state.currentPage + 1);
-    
     if ( users.length === 0 ) return;
+
     state.currentPage += 1;
     state.users = users;
 }
 
 const loadPreviusPage = async() => {
-
-    if(state.currentPage === 1) return;
+    if( state.currentPage === 1 ) return;
     const users = await loadUsersByPage( state.currentPage - 1);
+
     state.users = users;
     state.currentPage -= 1;
-    
 }
 
 /**
@@ -46,9 +45,12 @@ const onUserChanged = (updatedUser) => {
 }
 
 const reloadPage = async() => {
-
     const users = await loadUsersByPage( state.currentPage);
-    if ( users.length === 0 ) return;
+    if ( users.length === 0 ) {
+        await loadPreviusPage();
+        return;
+    }
+
     state.users = users;
 }
 
